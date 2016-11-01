@@ -27,3 +27,12 @@ endfunction
 function y = g(x)
     y = log(x) + 12
 endfunction
+
+
+//-->bisection(g, 10^-15, 1, 100, 10^-22, 10^-22)
+// ans  =
+// 
+//    65.        
+//    0.0000061  
+//    0.         
+//    2.711D-20  
