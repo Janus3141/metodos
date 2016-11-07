@@ -1,5 +1,4 @@
 function y = gauss(A, n)
-    L = eye(n,n)
     for i = 1:(n-1) // Filas pivot
         for k = (i+1):n // Siguientes filas
             razon = A(k, i)/A(i, i)
@@ -61,7 +60,6 @@ endfunction
 
 function y = pivotgauss_solver(A, n, b)
     [A,P] = pivotgauss(A,n)
-    //printf("P = (%d,%d,%d)\n", P(1), P(2), P(3))
     for i = 1:n
         for j = 1:(i-1)
             b(P(i)) = b(P(i)) - A(P(i), j) * b(P(j))
@@ -73,7 +71,9 @@ function y = pivotgauss_solver(A, n, b)
         end
         b(P(i)) = b(P(i)) / A(P(i), i)
     end
-    y = b
+    for i = 1:n
+        y(i) = b(P(i))
+    end
 endfunction
 
 mata = [10^-12, 1; 1, 1]; veca = [1;2]
@@ -89,3 +89,12 @@ matc = [1,2,-1,0,0,3,1;
         0,0,0,1,1,-1,0]
         
 vecc = [-2; -2; 2; 5; -7; -8; 2]
+
+
+//Ejercicio prac 2
+matd = [1, 1,  3,  4;
+        1, 4,  9,  16;
+        1, 8,  27,  64;
+        1, 16, 81, 256]
+
+vecd = [2; 10; 44; 190]
