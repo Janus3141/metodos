@@ -1,18 +1,17 @@
-function y = gauss(A, n)
-    for i = 1:(n-1) // Filas pivot
-        for k = (i+1):n // Siguientes filas
+function [A2,b2] = gauss(A, b, n)
+    for i = 1:(n-1)
+        for k = (i+1):n
             razon = A(k, i)/A(i, i)
-            A(k,i) = razon
-            for j = (i+1):n // Columnas
-                A(k, j) = A(k, j) - razon * A(i, j)
-            end
+            A(k,:) = A(k,:) - A(i,:)*razon
+            b(k) = b(k) - b(i)*razon
         end
     end
-    y = A
+    A2 = A
+    b2 = b
 endfunction
 
 
-function [y, P] = pivotgauss(A, n)
+function [A2, b2, P] = pivotgauss(A, b, n)
     P = 1:n
     for i = 1:(n-1)
 
@@ -30,71 +29,11 @@ function [y, P] = pivotgauss(A, n)
 
         // Factorización
         for k = (i+1):n
-            razon = A(P(k), i)/A(P(i), i)
-            A(P(k), i) = razon
-            for j = (i+1):n
-                A(P(k), j) = A(P(k), j) - razon * A(P(i), j)
-            end
+            razon = A(P(k),i) / A(P(i),i)
+            A(P(k),:) = A(P(k),:) - A(P(i),:)*razon
+            b(P(k)) = b(P(k)) - b(P(i))
         end
     end
-    y = A
+    A2 = A
+    b2 = b
 endfunction
-
-
-function y = gauss_solver(A, n, b)
-    A = gauss(A,n)
-    for i = 1:n     // Lb' = b
-        for j = 1:(i-1)
-            b(i) = b(i) - A(i, j) * b(j)
-        end
-    end
-    for i = n:-1:1
-        for j = n:-1:(i+1)
-            b(i) = b(i) - A(i, j) * b(j)
-        end
-        b(i) = b(i) / A(i, i)
-    end
-    y = b
-endfunction
-
-
-function y = pivotgauss_solver(A, n, b)
-    [A,P] = pivotgauss(A,n)
-    for i = 1:n
-        for j = 1:(i-1)
-            b(P(i)) = b(P(i)) - A(P(i), j) * b(P(j))
-        end
-    end
-    for i = n:-1:1
-        for j = n:-1:(i+1)
-            b(P(i)) = b(P(i)) - A(P(i), j) * b(P(j))
-        end
-        b(P(i)) = b(P(i)) / A(P(i), i)
-    end
-    for i = 1:n
-        y(i) = b(P(i))
-    end
-endfunction
-
-mata = [10^-12, 1; 1, 1]; veca = [1;2]
-
-matb = [4,5,-6;2,0,-7;-5,-8,0]; vecb = [-28; 29; -64]
-
-matc = [1,2,-1,0,0,3,1;
-        1,2,2,1,-4,1,0;
-        0,1,-1,3,-3,0,0;
-        0,1,-1,2,1,1,0;
-        0,0,1,-2,1,0,1;
-        0,0,0,2,0,0,3;
-        0,0,0,1,1,-1,0]
-        
-vecc = [-2; -2; 2; 5; -7; -8; 2]
-
-
-//Ejercicio prac 2
-matd = [1, 1,  3,  4;
-        1, 4,  9,  16;
-        1, 8,  27,  64;
-        1, 16, 81, 256]
-
-vecd = [2; 10; 44; 190]
